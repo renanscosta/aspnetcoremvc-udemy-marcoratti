@@ -1,0 +1,14 @@
+﻿@model LancheListViewModel
+@{
+    ViewData["Title"] = Model.CategoriaAtual;
+}
+
+<div>
+    <h2>@ViewData["Title"]</h2>
+</div>
+@foreach (var item in Model.Lanches)
+{
+    //pode ser usado assim também: <partial name="_LanchesResumo" model="item" />
+    @await Html.PartialAsync("_LanchesResumo",item)
+
+}
