@@ -24,11 +24,26 @@ namespace LanchesMac.Controllers
             _categoriaRepository = categoriaRepository;
         }
 
-        public IActionResult List()
+        public IActionResult List(string categoria)
         {
+            IEnumerable<Lanche> lanches;
+            string _categoria = categoria;
+
+            if (String.IsNullOrWhiteSpace(categoria))
+            {
+                lanches = _lancheRepository.Lanches.OrderBy(lanches => lanches.LancheId);
+                _categoria = "Todos os lanches";
+            }
+            else
+            {
+                lanches = _lancheRepository.Lanches.Where(l => l.Categoria.CategoriaNome.Equals(_categoria, StringComparison.OrdinalIgnoreCase))
+                                                          .OrderBy(l => l.Nome);
+            }
+
+
             var viewModel = new LancheListViewModel();
-            viewModel.Lanches = _lancheRepository.Lanches;
-            viewModel.CategoriaAtual = "Todos os lanches";
+            viewModel.Lanches = lanches;
+            viewModel.CategoriaAtual = _categoria;
 
             return View(viewModel);
         }

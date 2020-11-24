@@ -14,11 +14,11 @@ namespace LanchesMac.Components
 
         public IViewComponentResult Invoke()
         {
-            //_carrinhoCompra.CarrinhoCompraItens = _carrinhoCompra.GetCarrinhoCompraItems();
-            _carrinhoCompra.CarrinhoCompraItens = new System.Collections.Generic.List<CarrinhoCompraItem>()
-            {
-                new CarrinhoCompraItem(), new CarrinhoCompraItem()
-            };
+            _carrinhoCompra.CarrinhoCompraItens = _carrinhoCompra.GetCarrinhoCompraItems();
+            // _carrinhoCompra.CarrinhoCompraItens = new System.Collections.Generic.List<CarrinhoCompraItem>()
+            // {
+            //     new CarrinhoCompraItem(), new CarrinhoCompraItem()
+            // };
 
             var vwCarrinhoCompra = new CarrinhoCompraViewModel()
             {
