@@ -28,6 +28,5 @@ namespace LanchesMac.Components
 
             return View(vwCarrinhoCompra);
         }
-
     }
 }
