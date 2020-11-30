@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LanchesMac.Context;
 using LanchesMac.Models;
 using LanchesMac.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +32,7 @@ namespace LanchesMac
             //Transient: Cria o objeto para cada requisição do serviço
             services.AddTransient<ICategoriaRepository, CategoriaRepository>();
             services.AddTransient<ILancheRepository, LancheRepository>();
+            services.AddTransient<IPedidoRepository, PedidoRepository>();
 
             //Singleton: um objeto de serviço será criado e irá servir para todas as requisições
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();//para ter acesso a sessao no contexto da aplicação

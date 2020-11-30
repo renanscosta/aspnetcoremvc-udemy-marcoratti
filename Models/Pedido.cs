@@ -11,7 +11,7 @@ namespace LanchesMac.Models
         [BindNever] // para não mapear no formulario
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]//problema do "GENERATED" do postgre 9x
         public int PedidoId { get; set; }
-        //public List<PedidoDetalhe> PedidoItens { get; set; }
+        public List<PedidoDetalhe> PedidoItens { get; set; }
 
         [Required(ErrorMessage = "Informe o nome")]
         [Display(Name = "Nome")]
