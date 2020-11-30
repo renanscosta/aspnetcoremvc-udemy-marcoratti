@@ -57,5 +57,22 @@ namespace LanchesMac.Controllers
 
             return View(lanche);
         }
+
+        public IActionResult Search(string searchString)
+        {
+            IEnumerable<Lanche> lanches;
+
+            if (!String.IsNullOrWhiteSpace(searchString))
+            {
+                lanches = _lancheRepository.Lanches.Where(l => l.Nome.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                                                                  l.DescricaoCurta.Contains(searchString, StringComparison.OrdinalIgnoreCase) ||
+                                                                  l.DescricaoDetalhada.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                                                       .OrderBy(l => l.Nome);
+            }
+            else
+                lanches = _lancheRepository.Lanches.OrderBy(lanches => lanches.LancheId);
+
+            return View("~/Views/Lanche/List.cshtml", new LancheListViewModel() { Lanches = lanches, CategoriaAtual = "Todos os Lanches" });
+        }
     }
 }
