@@ -1,0 +1,42 @@
+﻿<br />
+<br />
+<div class="container">
+
+    <div class="jumbotron">
+        <h2>@ViewBag.CheckoutCompletoMensagem</h2>
+    </div>
+
+    @* quando chamada pela action *@
+    @* <div class="card">
+        <div class="card-body">
+        <p>Cliente : <strong> @ViewBag.Cliente</strong></p>
+        <br />
+        <p>Data do Pedido : <strong> @ViewBag.DataPedido</strong></p>
+        <br />
+        <p>Número do Pedido : <strong>@ViewBag.NumeroPedido</strong></p>
+        <br />
+        <p>Valor Total do Pedido: <strong>@ViewBag.TotalPedido</strong></p>
+        </div>
+        </div> *@
+
+    @* quando chamada pela action "fortemente tipada" *@
+    @model Pedido
+
+    <div class="card">
+        <div class="card-body">
+            <p>Cliente</p><strong>@Model.Nome</strong>
+            <p>Data do pedido</p><strong>@Model.PedidoEnviado</strong>
+            <p>Número do pedido</p><strong>@Model.PedidoId</strong>
+            <br />
+            @foreach (var item in Model.PedidoItens)
+            {
+                <img src="@item.Lanche.ImagemUrl" width="40px" height="40px">
+                <ul>@item.Quantidade</ul>
+                <ul>@item.Lanche.Nome</ul>
+                <ul>@item.Lanche.Preco</ul>
+            }
+            <p>Valor total do pedido: </p><strong>@ViewBag.TotalPedido</strong>
+        </div>
+    </div>
+
+</div>

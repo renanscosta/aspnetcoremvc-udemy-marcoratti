@@ -22,6 +22,7 @@ namespace LanchesMac.Repositories
         {
             pedido.PedidoEnviado = DateTime.Now;
             _context.Pedidos.Add(pedido);
+            _context.SaveChanges();
 
             foreach (var carrinhoItem in _carrinhoCompra.CarrinhoCompraItens)
             {
@@ -37,8 +38,6 @@ namespace LanchesMac.Repositories
             }
 
             _context.SaveChanges();
-
-            throw new System.NotImplementedException();
         }
     }
 }

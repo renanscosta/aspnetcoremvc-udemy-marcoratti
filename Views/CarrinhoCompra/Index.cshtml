@@ -43,11 +43,7 @@
                 <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     Adicionar mais lanches<span class="caret"></span>
                 </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a asp-controller="Lanche" asp-action="List" asp-route-categoria="Normal">Normal</a></li>
-                    <li><a asp-controller="Lanche" asp-action="List" asp-route-categoria="Natural">Natural</a></li>
-                    <li><a asp-controller="Lanche" asp-action="List" asp-route-categoria="">Todos</a></li>
-                </ul>
+                @await Component.InvokeAsync("CategoriaMenu")
             </a>
         </div>
     </div>
