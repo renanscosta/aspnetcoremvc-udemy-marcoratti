@@ -5,6 +5,7 @@ using LanchesMac.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,11 @@ namespace LanchesMac
             {
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), options => options.SetPostgresVersion(new Version(9, 6)));
             });
+
+            //tipo de usuário e servico padrão
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                    .AddEntityFrameworkStores<AppDbContext>() //implementação do EF que armazena as informações de identidade
+                    .AddDefaultTokenProviders(); //Serviços de troca de senha e envio de e-mail
 
             //Transient: Cria o objeto para cada requisição do serviço
             services.AddTransient<ICategoriaRepository, CategoriaRepository>();
@@ -63,9 +69,10 @@ namespace LanchesMac
             app.UseStaticFiles();
 
             app.UseSession();
-            app.UseRouting();
+            app.UseAuthentication();//middleware para autenticação padrão do Identity. "habilita de fato"
 
-            app.UseAuthorization();
+            app.UseRouting();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
