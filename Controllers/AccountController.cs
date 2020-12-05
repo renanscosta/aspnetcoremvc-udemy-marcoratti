@@ -53,5 +53,24 @@ namespace LanchesMac.Controllers
             return View(loginVM);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(LoginViewModel loginVM)
+        {
+            var user = new IdentityUser(loginVM.UserName);
+            var result = await _userManger.CreateAsync(user, loginVM.Password);
+
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
+
+            return View(loginVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
