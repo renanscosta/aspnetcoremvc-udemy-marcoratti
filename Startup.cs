@@ -72,7 +72,7 @@ namespace LanchesMac
             app.UseAuthentication();//middleware para autenticação padrão do Identity. "habilita de fato"
 
             app.UseRouting();
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

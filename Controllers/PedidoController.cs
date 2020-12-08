@@ -1,5 +1,6 @@
 using LanchesMac.Models;
 using LanchesMac.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -25,6 +26,7 @@ namespace LanchesMac.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Checkout(Pedido pedido)
         {
             //ModelBind: os dados são injetados pela view conforme modelo definido

@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LanchesMac.ViewModel;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LanchesMac.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
         private readonly UserManager<IdentityUser> _userManger;
         private readonly SignInManager<IdentityUser> _signInManager;
+
 
         public AccountController(ILogger<AccountController> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
@@ -29,6 +32,7 @@ namespace LanchesMac.Controllers
             });
         }
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel loginVM)
         {
             if (!ModelState.IsValid)
@@ -57,11 +61,14 @@ namespace LanchesMac.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(LoginViewModel loginVM)
         {
-            var user = new IdentityUser(loginVM.UserName);
-            var result = await _userManger.CreateAsync(user, loginVM.Password);
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser(loginVM.UserName);
+                var result = await _userManger.CreateAsync(user, loginVM.Password);
 
-            if (result.Succeeded)
-                return RedirectToAction("Index", "Home");
+                if (result.Succeeded)
+                    return RedirectToAction("Index", "Home");
+            }
 
             return View(loginVM);
         }

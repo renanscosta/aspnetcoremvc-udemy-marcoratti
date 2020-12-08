@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using LanchesMac.Models;
 using LanchesMac.Repositories;
 using LanchesMac.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LanchesMac.Controllers
 {
@@ -38,6 +39,7 @@ namespace LanchesMac.Controllers
             return View(carrinhoCompraModel);
         }
 
+        [Authorize]
         public RedirectToActionResult AdicionarItemNoCarrinhoCompra(int lancheId)
         {
             //RedirectToActionResult: para trabalhar com redirecionamentos
@@ -51,7 +53,7 @@ namespace LanchesMac.Controllers
 
             return RedirectToAction("Index");
         }
-
+        [Authorize]
         public RedirectToActionResult RemoverItemNoCarrinhoCompra(int lancheId)
         {
             //RedirectToActionResult: para trabalhar com redirecionamentos
