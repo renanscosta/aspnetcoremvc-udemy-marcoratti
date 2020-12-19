@@ -35,6 +35,9 @@ namespace LanchesMac
                     .AddEntityFrameworkStores<AppDbContext>() //implementação do EF que armazena as informações de identidade
                     .AddDefaultTokenProviders(); //Serviços de troca de senha e envio de e-mail
 
+            //redirecionamento de acesso negado
+            services.ConfigureApplicationCookie(options => options.AccessDeniedPath = "/Home/AccessDenied");
+
             //Transient: Cria o objeto para cada requisição do serviço
             services.AddTransient<ICategoriaRepository, CategoriaRepository>();
             services.AddTransient<ILancheRepository, LancheRepository>();

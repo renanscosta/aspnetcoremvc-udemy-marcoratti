@@ -33,7 +33,10 @@ namespace LanchesMac.Controllers
             return View(homeViewModel);
         }
 
-
+        public ViewResult AccessDenied()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

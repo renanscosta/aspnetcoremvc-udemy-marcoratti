@@ -77,6 +77,8 @@ namespace LanchesMac.Controllers
 
                     return RedirectToAction("LoggedIn", "Account");
                 }
+
+                result.Errors.ToList().ForEach(e => ModelState.AddModelError(e.Code, e.Description));
             }
             return View(loginVM);
         }
