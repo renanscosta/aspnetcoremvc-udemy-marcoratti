@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ReflectionIT.Mvc.Paging;
 
 namespace LanchesMac
 {
@@ -50,6 +51,11 @@ namespace LanchesMac
             services.AddScoped(cp => CarrinhoCompra.GetCarrinho(cp));
 
             services.AddControllersWithViews();
+            services.AddPaging(options =>
+            {
+                options.ViewName = "Bootstrap4";
+                options.PageParameterName = "pageindex";
+            });
 
             services.AddMemoryCache();
             services.AddSession();
