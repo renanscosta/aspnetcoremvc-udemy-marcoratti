@@ -1,60 +1,63 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using LanchesMac.ViewModel;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LanchesMac.Controllers
 {
-    [Authorize]
     public class AccountController : Controller
     {
-        private readonly ILogger<AccountController> _logger;
-        private readonly UserManager<IdentityUser> _userManger;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-
-        public AccountController(ILogger<AccountController> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signManager)
         {
-            _logger = logger;
-            _userManger = userManager;
-            _signInManager = signInManager;
+            _userManager = userManager;
+            _signInManager = signManager;
         }
 
-        [HttpGet]
-        public IActionResult Login(string redirectUrl)
+        //implementar login, registro e logout
+
+        public IActionResult Login(string returnUrl)
         {
             return View(new LoginViewModel()
             {
-                UrlRedirect = redirectUrl
+                ReturnUrl = returnUrl
             });
         }
+
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel loginVM)
         {
             if (!ModelState.IsValid)
                 return View(loginVM);
 
-            var user = await _userManger.FindByNameAsync(loginVM.UserName);
+            var user = await _userManager.FindByNameAsync(loginVM.UserName);
 
             if (user != null)
             {
-                var resultLogin = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
-
-                if (resultLogin.Succeeded)
+                var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
+                if (result.Succeeded)
                 {
-                    if (String.IsNullOrWhiteSpace(loginVM.UrlRedirect))
+                    if (string.IsNullOrEmpty(loginVM.ReturnUrl))
+                    {
                         return RedirectToAction("Index", "Home");
-
-                    return RedirectToAction(loginVM.UrlRedirect);
+                    }
+                    return Redirect(loginVM.ReturnUrl);
                 }
             }
 
-            ModelState.AddModelError("", "Usuário/Senha inválidos ou não localizados");
+            ModelState.AddModelError("", "Usuário/Senha inválidos ou não localizados!!");
             return View(loginVM);
+        }
+
+        public IActionResult Register()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -63,17 +66,25 @@ namespace LanchesMac.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser(loginVM.UserName);
-                var result = await _userManger.CreateAsync(user, loginVM.Password);
+                var user = new IdentityUser() { UserName = loginVM.UserName };
+                var result = await _userManager.CreateAsync(user, loginVM.Password);
 
                 if (result.Succeeded)
-                    return RedirectToAction("Index", "Home");
-            }
+                {
+                    // Adiciona o usuário padrão ao perfil Member
+                    await _userManager.AddToRoleAsync(user, "Member");
+                    await _signInManager.SignInAsync(user, isPersistent: false);
 
+                    return RedirectToAction("LoggedIn", "Account");
+                }
+            }
             return View(loginVM);
         }
 
+        public ViewResult LoggedIn() => View();
+
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
