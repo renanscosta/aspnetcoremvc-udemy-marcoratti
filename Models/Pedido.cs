@@ -58,6 +58,8 @@ namespace LanchesMac.Models
 
         [BindNever]
         [ScaffoldColumn(false)]//para não ser visível na view
+        [Column(TypeName = "decimal(18,2)")]
+        [Display(Name = "Total do Pedido")]
         public decimal PedidoTotal { get; set; }
 
         //[BindNever]
@@ -71,5 +73,10 @@ namespace LanchesMac.Models
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
         public DateTime? PedidoEntregueEm { get; set; }
+
+        [BindNever]
+        [ScaffoldColumn(false)]
+        [Display(Name = "Itens no pedido")]
+        public int TotalItensPedido { get; set; }
     }
 }

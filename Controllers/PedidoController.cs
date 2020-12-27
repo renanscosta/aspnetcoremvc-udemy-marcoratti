@@ -43,6 +43,18 @@ namespace LanchesMac.Controllers
 
             if (ModelState.IsValid)//aplica as validações definidas via annotations
             {
+                decimal precoTotalPedido = 0;
+                int totalItensPedido = 0;
+
+                foreach (var item in items)
+                {
+                    totalItensPedido += item.Quantidade;
+                    precoTotalPedido += (item.Lanche.Preco * item.Quantidade);
+                }
+
+                pedido.PedidoTotal = precoTotalPedido;
+                pedido.TotalItensPedido = totalItensPedido;
+
                 _repository.CriarPedido(pedido);
 
                 //TempData: usado para passar dados de action para action

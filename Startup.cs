@@ -1,4 +1,5 @@
 using System;
+using LanchesMac.Areas.Admin.Servicos;
 using LanchesMac.Context;
 using LanchesMac.Models;
 using LanchesMac.Repositories;
@@ -48,7 +49,11 @@ namespace LanchesMac
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();//para ter acesso a sessao no contexto da aplicação
 
             //Scoped: objeto de serviço criado para cada requisição
+            //cria um objeto Scoped, ou seja um objeto que esta associado a requisição
+            //isso significa que se duas pessoas solicitarem o objeto CarrinhoCompra ao  mesmo tempo
+            //elas vão obter instâncias diferentes
             services.AddScoped(cp => CarrinhoCompra.GetCarrinho(cp));
+            services.AddScoped<RelatorioVendasService>();
 
             services.AddControllersWithViews();
             services.AddPaging(options =>
